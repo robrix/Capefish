@@ -1,0 +1,6 @@
+log/*.log
+tmp/**/*
+doc/api
+.DS_Store
+garbagecollective.org.tmproj
+db/development.sqlite3

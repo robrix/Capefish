@@ -1,0 +1,8 @@
+<% @page = page %>
+
+<item> 
+	<title><%= page.title %></title> 
+	<description><![CDATA[<%= render(:inline => page.content) %>]]></description>  
+	<pubDate><%= page.updated_at.rfc2822 %></pubDate>
+	<guid isPermaLink="true"><%= File.dirname request.url %><%= page.to_param %></guid>
+</item>

@@ -1,0 +1,8 @@
+<% content_tag_for :li, page do %>
+	<%= link_to page.title, edit_page_url(page), :rel => "overlay get" %>
+	(<%= link_to_remote "delete", :url => page, :method => :delete, :confirm => "Are you sure you wish to delete this page? This action cannot be undone.", :html => { :title => "Delete page '#{page.title}'" } %>)
+	<% content_tag_for :ul, page, :children do %>
+		<%= render :partial => "page", :collection => page.children %>
+		<li><%= link_to "new subpage", new_page_url(:parent => page.id), :class => "lbOn" %></li>
+	<%- end %>
+<%- end %>

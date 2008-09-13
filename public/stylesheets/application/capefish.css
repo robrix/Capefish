@@ -1,0 +1,39 @@
+div.backdrop {
+	position: fixed;
+	left: 0; right: 0;
+	top: 0; bottom: 0;
+	z-index: 5000;
+	background: #000;
+	-moz-opacity: 0.0;
+	opacity: .0;
+	filter: alpha(opacity=0);
+}
+
+div.overlay div.loading {
+	position: absolute;
+	left: 0; right: 0;
+	top: 0; bottom: 0;
+	background: url(/images/application/loading-black.gif) scroll no-repeat center center;
+}
+
+div.overlay div.content {
+	position: fixed;
+	left: 50%;
+	top: 50%;
+	width: 800px; height: 600px;
+	margin-left: -400px; margin-top: -300px;
+	z-index: 6000;
+	background: #fff;
+	overflow: auto;
+}
+
+div.overlay div.error {
+	width: 400px; height: 100px;
+	margin-left: -200px; margin-top: -50px;
+	line-height: 100px;
+	text-align: center;
+}
+
+div.overlay div.loaded {
+	padding: 25px;
+}

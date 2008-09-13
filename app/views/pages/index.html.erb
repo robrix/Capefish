@@ -1,0 +1,11 @@
+<%-
+content_for :stylesheets, stylesheet_link_tag("application/capefish")
+content_for :javascripts, javascript_include_tag("jquery", "jquery.livequery", "jquery.lowpro", "jquery.overlay", :cache => true)
+-%>
+
+<h1>Pages</h1>
+
+<ul>
+	<%= render :partial => "page", :collection => @pages %>
+	<li><%= link_to "new page", new_page_url, :rel => "overlay get" %></li>
+</ul>
