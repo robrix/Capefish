@@ -4,13 +4,14 @@ class	Page
 	class PageNotFoundException < Exception ; end
 	
 	PAGES_ROOT = "#{RAILS_ROOT}/pages"
+	SUFFIX = ".html.erb"
 	
 	def self.exists?(path)
 		File.exists? self.file_path(path)
 	end
 	
 	def self.file_path(path)
-		"#{PAGES_ROOT}/#{path.join("/")}.html.erb"
+		"#{PAGES_ROOT}/#{path.join("/")}#{SUFFIX}"
 	end
 	
 	def self.dir_path(path)
@@ -18,7 +19,7 @@ class	Page
 	end
 	
 	def self.roots()
-		Dir.glob("#{PAGES_ROOT}/*.html.erb").collect{ |file_path|
+		Dir.glob("#{PAGES_ROOT}/*#{SUFFIX}").collect{ |file_path|
 			Page.new :file_path => file_path
 		}.sort_by(&:title)
 	end
@@ -27,7 +28,7 @@ class	Page
 		file_path && Pathname.new(file_path).
 			cleanpath.
 			relative_path_from(Pathname.new(PAGES_ROOT).cleanpath).
-			to_s.chomp(".html.erb").
+			to_s.chomp("#{SUFFIX}").
 			split("/")
 	end
 	
@@ -94,7 +95,7 @@ class	Page
 	end
 	
 	def children
-		@children ||= Dir.glob("#{self.dir_path}/*.html.erb").collect do |path|
+		@children ||= Dir.glob("#{self.dir_path}/*#{SUFFIX}").collect do |path|
 			Page.new(:file_path => path)
 		end
 	end
