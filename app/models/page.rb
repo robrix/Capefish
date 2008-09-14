@@ -1,5 +1,5 @@
 class	Page
-	attr_accessor :content, :title, :summary, :path
+	attr_accessor :content, :title, :summary, :path, :layout_template
 	attr_reader :format
 
 	class PageNotFoundException < Exception ; end
@@ -42,7 +42,7 @@ class	Page
 	end
 	
 	def initialize(options = {})
-		@format = options[:format]
+		@format = options[:format] || Mime::HTML
 		@content_view = ActionView::Base.new(ActionView::TemplateFinder.process_view_paths(PAGES_ROOT), {:page => self}, self)
 		if options[:path] or options[:file_path]
 			@path = if options[:file_path]
@@ -98,7 +98,7 @@ class	Page
 	end
 	
 	def to_param
-		"/" + self.path.join("/")
+		self.path.join("/")
 	end
 	
 	def new_record?
@@ -108,7 +108,7 @@ class	Page
 	protected
 	
 	def self.extension_for_format(format)
-		format.to_sym.to_s
+		(format || Mime::HTML).to_sym.to_s
 	end
 	
 	def format_extension

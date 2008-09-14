@@ -36,7 +36,7 @@ Overlay = {
 		onmousedown: function(event) {
 			var overlay = this.element
 			while(overlay && (overlay.attr("class") != "overlay")) { overlay = $(overlay.parent()) }
-			overlay && overlay.fadeOut("slow", function() {
+			overlay && overlay.fadeTo("slow", 0, function() {
 				$(this).remove()
 			})
 		}

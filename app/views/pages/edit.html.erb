@@ -3,22 +3,8 @@ content_for :stylesheets, stylesheet_link_tag("application/pages")
 content_for :javascripts, javascript_include_tag("prototype", "application", :cache => true)
 -%>
 
-<h1><%= @page.new_record? ? "New" : "Edit" %> Page</h1>
+<%= render(:inline => @page.content) -%>
 
-<%- form_for @page, :html => { "accept-charset" => "utf-8" } do |form| %>
-	<dl>
-		<dt><%= form.label :title %>:</dt>
-		<dd><%= form.text_field :title %></dd>
-		
-		<dt><%= form.label :summary %>:</dt>
-		<dd><%= form.text_area :summary %></dd>
-		
-		<dt><%= form.label :content %>:</dt>
-		<dd class="rich">
-			<%= form.text_area :content %>
-		</dd>
-	</dl>
+<hr>
 
-	<%= form.submit "Save" %>
-<%- end -%>
-<p><a rel="overlay close">close without saving</a></p>
+<%= link_to "dismiss", "#", :rel => "overlay close" %>

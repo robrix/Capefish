@@ -17,11 +17,16 @@ class PagesController < ApplicationController
 	end
 	
 	def show
-		@page = Page.find(:path => params[:path], :format => request.format) || error
+		if @page = Page.find(:path => params[:path], :format => request.format)
+			@page.layout_template && self.class.layout(@page.layout_template)	
+		else
+			error
+		end
 	end
 	
 	def edit
-		@page = Page.find(:path => params[:path], :format => request.format) || error
+		@page = Page.find(:path => params[:id].split("/")) || error
+		render :layout => @page.layout_template || self.class.default_layout_template
 	end
 	
 	def update
