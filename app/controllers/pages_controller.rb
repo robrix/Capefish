@@ -19,13 +19,13 @@ class PagesController < ApplicationController
 		@page = Page.find(:path => params[:path]) || error
 		respond_to do |format|
 			format.html do
-				@page.layout_template && self.class.layout(@page.layout_template)	
+				@page.layout_template && self.class.layout(@page.layout_template)
 			end
 			format.xml do
 				@pages = @page.children
 				render :action => "index"
 			end
-		end
+		end if @page
 	end
 	
 	def edit
@@ -48,7 +48,7 @@ class PagesController < ApplicationController
 	protected
 	
 	def error(code = 404)
-		render :action => "none"
+		render :action => "none.html.erb"
 		self.class.cache_page response.body, "/404.html"
 	end
 end
