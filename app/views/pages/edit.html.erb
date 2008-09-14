@@ -1,10 +1,16 @@
 <%-
-content_for :stylesheets, stylesheet_link_tag("application/pages")
-content_for :javascripts, javascript_include_tag("prototype", "application", :cache => true)
+content_for :stylesheets, stylesheet_link_tag("application/capefish")
+content_for :javascripts, javascript_include_tag("jquery", "jquery.livequery", "jquery.lowpro", "capefish.editor", :cache => true)
 -%>
 
-<%= render(:inline => @page.content) -%>
+<input type="hidden" value="<%= @page.path.join("/") %>" id="capefish_page_path">
+<input type="hidden" value="<%= form_authenticity_token %>" id="capefish_authenticity_token">
+
+<div id="capefish_editor" contenteditable="true">
+	<%= @page.raw_content.gsub(/\<\%(.+?)\%\>/, '<span class="erb">\1</span>') -%>
+</div>
 
 <hr>
 
-<%= link_to "dismiss", "#", :rel => "overlay close" %>
+<input type="button" value="Save" id="capefish_save">
+<input type="button" value="Cancel" id="capefish_cancel">

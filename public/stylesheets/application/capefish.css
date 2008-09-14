@@ -1,3 +1,4 @@
+/* overlay */
 div.backdrop {
 	position: fixed;
 	left: 0; right: 0;
@@ -36,4 +37,11 @@ div.overlay div.error {
 
 div.overlay div.loaded {
 	padding: 25px;
+}
+
+
+
+/* editor */
+#capefish_editor span.erb {
+	display: none;
 }

@@ -4,7 +4,7 @@ Overlay = {
 			this.url = options.url
 			this.method = options.method || "GET"
 		},
-		onmousedown: function() {
+		onclick: function() {
 			var overlay = $("<div class='overlay'></div>")
 			var backdrop = $("<div class='backdrop'></div>")
 			overlay.append(backdrop)
@@ -33,12 +33,13 @@ Overlay = {
 		}
 	}),
 	Dismiss: $.klass({
-		onmousedown: function(event) {
+		onclick: function(event) {
 			var overlay = this.element
 			while(overlay && (overlay.attr("class") != "overlay")) { overlay = $(overlay.parent()) }
 			overlay && overlay.fadeTo("slow", 0, function() {
 				$(this).remove()
 			})
+			return false
 		}
 	})
 }

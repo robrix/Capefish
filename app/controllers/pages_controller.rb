@@ -30,7 +30,11 @@ class PagesController < ApplicationController
 	end
 	
 	def update
-		
+		@page = Page.find(:path => params[:id].split("/")) || error
+		File.open(Page.file_path(@page.path), "w") do |file|
+			file.write params[:page_content]
+		end
+		render :text => "it worked"
 	end
 	
 	def destroy

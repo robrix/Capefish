@@ -1,16 +1,16 @@
 class	Page
-	attr_accessor :content, :title, :summary, :path, :layout_template
+	attr_accessor :content, :title, :summary, :path, :layout_template, :raw_content
 	attr_reader :format
 
 	class PageNotFoundException < Exception ; end
 	
 	PAGES_ROOT = "#{RAILS_ROOT}/pages"
 	
-	def self.exists?(path, format)
+	def self.exists?(path, format = Mime::HTML)
 		File.exists? self.file_path(path, format)
 	end
 	
-	def self.file_path(path, format)
+	def self.file_path(path, format = Mime::HTML)
 		"#{PAGES_ROOT}/#{path.join("/")}.#{self.extension_for_format(format)}.erb"
 	end
 	
@@ -18,13 +18,13 @@ class	Page
 		"#{PAGES_ROOT}/#{path.join("/")}/"
 	end
 	
-	def self.roots(format = Mime::EXTENSION_LOOKUP["html"])
+	def self.roots(format = Mime::HTML)
 		Dir.glob("#{PAGES_ROOT}/*.#{Page.extension_for_format format}.erb").collect do |file_path|
 			Page.new :file_path => file_path, :format => format
 		end
 	end
 	
-	def self.file_path_to_path(file_path, format)
+	def self.file_path_to_path(file_path, format = Mime::HTML)
 		file_path && Pathname.new(file_path).
 			cleanpath.
 			relative_path_from(Pathname.new(PAGES_ROOT).cleanpath).
@@ -63,6 +63,10 @@ class	Page
 	
 	def dir_path
 		Page.dir_path(self.path)
+	end
+	
+	def raw_content
+		@raw_content ||= IO.read(self.file_path)
 	end
 	
 	def content
