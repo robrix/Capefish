@@ -48,7 +48,7 @@ class PagesController < ApplicationController
 	protected
 	
 	def error(code = 404)
-		render :action => "none.html.erb"
+		render :action => "none.html.erb", :layout => self.class.default_layout_template
 		self.class.cache_page response.body, "/404.html"
 	end
 end
