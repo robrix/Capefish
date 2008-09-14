@@ -18,9 +18,9 @@ class	Page
 	end
 	
 	def self.roots()
-		Dir.glob("#{PAGES_ROOT}/*.html.erb").collect do |file_path|
+		Dir.glob("#{PAGES_ROOT}/*.html.erb").collect{ |file_path|
 			Page.new :file_path => file_path
-		end
+		}.sort_by(&:title)
 	end
 	
 	def self.file_path_to_path(file_path)
@@ -31,8 +31,12 @@ class	Page
 			split("/")
 	end
 	
+	def find_all
+		return []
+	end
 	
 	def self.find(options = {})
+		return self.find_all if options == :all
 		if Page.exists?(options[:path] || Page.file_path_to_path(options[:file_path]) || ["index"])
 			Page.new(options)
 		else
@@ -81,8 +85,12 @@ class	Page
 		@summary
 	end
 	
+	def name
+		@name || self.path.last
+	end
+	
 	def title
-		@title || self.path.last.titleize
+		@title || self.name.titleize
 	end
 	
 	def children
