@@ -16,10 +16,15 @@ class PagesController < ApplicationController
 	end
 	
 	def show
-		if @page = Page.find(:path => params[:path])
-			@page.layout_template && self.class.layout(@page.layout_template)	
-		else
-			error
+		@page = Page.find(:path => params[:path]) || error
+		respond_to do |format|
+			format.html do
+				@page.layout_template && self.class.layout(@page.layout_template)	
+			end
+			format.xml do
+				@pages = @page.children
+				render :action => "index"
+			end
 		end
 	end
 	
