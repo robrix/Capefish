@@ -1,40 +1,39 @@
 class	Page
 	attr_accessor :content, :title, :summary, :path, :layout_template, :raw_content
-	attr_reader :format
 
 	class PageNotFoundException < Exception ; end
 	
 	PAGES_ROOT = "#{RAILS_ROOT}/pages"
 	
-	def self.exists?(path, format = Mime::HTML)
-		File.exists? self.file_path(path, format)
+	def self.exists?(path)
+		File.exists? self.file_path(path)
 	end
 	
-	def self.file_path(path, format = Mime::HTML)
-		"#{PAGES_ROOT}/#{path.join("/")}.#{self.extension_for_format(format)}.erb"
+	def self.file_path(path)
+		"#{PAGES_ROOT}/#{path.join("/")}.html.erb"
 	end
 	
 	def self.dir_path(path)
 		"#{PAGES_ROOT}/#{path.join("/")}/"
 	end
 	
-	def self.roots(format = Mime::HTML)
-		Dir.glob("#{PAGES_ROOT}/*.#{Page.extension_for_format format}.erb").collect do |file_path|
-			Page.new :file_path => file_path, :format => format
+	def self.roots()
+		Dir.glob("#{PAGES_ROOT}/*.html.erb").collect do |file_path|
+			Page.new :file_path => file_path
 		end
 	end
 	
-	def self.file_path_to_path(file_path, format = Mime::HTML)
+	def self.file_path_to_path(file_path)
 		file_path && Pathname.new(file_path).
 			cleanpath.
 			relative_path_from(Pathname.new(PAGES_ROOT).cleanpath).
-			to_s.chomp(".#{Page.extension_for_format(format)}.erb").
+			to_s.chomp(".html.erb").
 			split("/")
 	end
 	
 	
 	def self.find(options = {})
-		if Page.exists?(options[:path] || Page.file_path_to_path(options[:file_path], options[:format]) || ["index"], options[:format])
+		if Page.exists?(options[:path] || Page.file_path_to_path(options[:file_path]) || ["index"])
 			Page.new(options)
 		else
 			nil
@@ -42,11 +41,10 @@ class	Page
 	end
 	
 	def initialize(options = {})
-		@format = options[:format] || Mime::HTML
 		@content_view = ActionView::Base.new(ActionView::TemplateFinder.process_view_paths(PAGES_ROOT), {:page => self}, self)
 		if options[:path] or options[:file_path]
 			@path = if options[:file_path]
-				Page.file_path_to_path(options[:file_path], @format)
+				Page.file_path_to_path(options[:file_path])
 			else
 				options[:path]
 			end
@@ -58,7 +56,7 @@ class	Page
 	end
 	
 	def file_path
-		Page.file_path(self.path, self.format)
+		Page.file_path(self.path)
 	end
 	
 	def dir_path
@@ -87,9 +85,9 @@ class	Page
 		@title || self.path.last.titleize
 	end
 	
-	def children(child_format = self.format)
-		@children ||= Dir.glob("#{self.dir_path}/*.#{Page.extension_for_format(child_format)}.erb").collect do |path|
-			Page.new(:file_path => path, :format => child_format)
+	def children
+		@children ||= Dir.glob("#{self.dir_path}/*.html.erb").collect do |path|
+			Page.new(:file_path => path)
 		end
 	end
 	
@@ -106,16 +104,6 @@ class	Page
 	end
 	
 	def new_record?
-		!Page.exists?(self.path, self.format)
-	end
-	
-	protected
-	
-	def self.extension_for_format(format)
-		(format || Mime::HTML).to_sym.to_s
-	end
-	
-	def format_extension
-		@format_extension ||= Page.extension_for_format(self.format)
+		!Page.exists?(self.path)
 	end
 end

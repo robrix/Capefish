@@ -8,8 +8,7 @@ class PagesController < ApplicationController
 	end
 	
 	def new
-		@page = Page.new(:format => Mime::HTML)
-		render :action => "edit", :layout => false
+		
 	end
 	
 	def create
@@ -17,7 +16,7 @@ class PagesController < ApplicationController
 	end
 	
 	def show
-		if @page = Page.find(:path => params[:path], :format => request.format)
+		if @page = Page.find(:path => params[:path])
 			@page.layout_template && self.class.layout(@page.layout_template)	
 		else
 			error

@@ -2,14 +2,15 @@
 # Likewise, all the methods added will be available for all controllers.
 class ApplicationController < ActionController::Base
 	cattr_accessor :default_layout_template
-	
 	@@default_layout_template = "default"
+	cattr_accessor :site_title
+	@@site_title = "Capefish"
 	
 	layout(proc do |controller|
 		if controller.request.xhr? or controller.request.format == Mime::JS
 			false
 		elsif controller.request.format == Mime::XML
-			:rss20
+			"rss20"
 		else
 			@@default_layout_template
 		end
