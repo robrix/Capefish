@@ -3,7 +3,7 @@ require File.dirname(__FILE__) + '/../app/models/basic_user'
 require "termios"
 
 def usage
-	puts <<USAGE
+	STDERR.puts <<USAGE
 script/basic_user crypt|add …
 	script/basic_user crypt		— print the appropriate hash for the entered password
 	script/basic_user add USERNAME	— print a username:hash line, suitable for appending onto the auth.passwd file
