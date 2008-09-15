@@ -15,34 +15,40 @@ class ApplicationController < ActionController::Base
 			@@default_layout_template
 		end
 	end)
-	helper :all # include all helpers, all the time
-	# before_filter :flickr
+	# helper :all # include all helpers, all the time
 	
 	# See ActionController::RequestForgeryProtection for details
 	# Uncomment the :secret if you're not using the cookie session store
 	protect_from_forgery # :secret => '2d16dd9d48cacf550362ca3dad4ea6f8'
 	
-	def default_url_options(options)
-		{ :only_path => true }
-	end
-	
 	protected
 	
-	def reporting_errors_on(*objs)
-		valid = objs.all?{ |obj| obj.valid? }
-		render :update do |page|
-			if valid
-				yield page
-			else
-				flash[:error] = objs.map{ |obj| obj.errors.full_messages }.flatten.join($/)
-				page.alert flash[:error]
+	def authenticate
+		if BasicUser.has_users
+			authenticate_or_request_with_http_basic do |username, password|
+				if @user = BasicUser.find(username) and @user.authenticate?(password)
+					session[:username] = username
+				end
 			end
+		else
+			true # no users == wiki-style (lack of) authentication
 		end
-		return valid
 	end
 	
 	def current_user
-		#User.find session[:user_id]
-		@user
+		@user ||= BasicUser.find(session[:username])
 	end
+	
+	# def reporting_errors_on(*objs)
+	# 	valid = objs.all?{ |obj| obj.valid? }
+	# 	render :update do |page|
+	# 		if valid
+	# 			yield page
+	# 		else
+	# 			flash[:error] = objs.map{ |obj| obj.errors.full_messages }.flatten.join($/)
+	# 			page.alert flash[:error]
+	# 		end
+	# 	end
+	# 	return valid
+	# end
 end

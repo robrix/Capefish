@@ -1,8 +1,10 @@
 class PagesController < ApplicationController
+	before_filter :authenticate, :except => [:show, :index]
+	
 	def index
 		@pages = Page.roots
 		respond_to do |format|
-			format.html
+			format.html { authenticate }
 			format.xml
 		end
 	end
