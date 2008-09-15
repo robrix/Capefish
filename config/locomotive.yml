@@ -1,6 +1,0 @@
----
-mode: production
-runs_at_launch: 0
-identifier: rawlingshomes.com
-port: 3002
-bundle: /Applications/Additional/Developer/Locomotive2/Bundles/rmagickRailsMar2007_ppc.locobundle
