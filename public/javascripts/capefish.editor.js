@@ -1,9 +1,13 @@
+$("#capefish_new_page").attach(Overlay.Loader, {
+	url: "/pages/new",
+	method: "GET"
+})
+
+
 $("#capefish_cancel").livequery("click", function(event) {
 	if(confirm("Are you sure you want to close the editor? Your changes will not be saved.")) {
-		if(Overlay != undefined) {
-			var dismiss = new Overlay.Dismiss()
-			dismiss.element = $(this)
-			dismiss.onclick(event)
+		if(this.overlay) {
+			this.overlay.hide()
 		} else {
 			window.location = "/pages"
 		}
@@ -11,7 +15,7 @@ $("#capefish_cancel").livequery("click", function(event) {
 })
 
 $("#capefish_save").livequery("click", function() {
-	var button = $(this)
+	var button = this
 	$.ajax({
 		type: "POST",
 		url: "/pages/"+$("#capefish_page_path").val(),
@@ -24,10 +28,8 @@ $("#capefish_save").livequery("click", function() {
 			alert("An error with status code "+request.status+" occurred while saving.")
 		},
 		success: function(data, status) {
-			if(document.Overlay != undefined) {
-				var dismiss = new Overlay.Dismiss()
-				dismiss.element = button
-				dismiss.onclick(event)
+			if(button.overlay) {
+				button.overlay.hide()
 			} else {
 				window.location = "/pages"
 			}

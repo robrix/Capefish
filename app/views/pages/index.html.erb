@@ -7,5 +7,6 @@ content_for :javascripts, javascript_include_tag("jquery", "jquery.livequery", "
 
 <ul>
 	<%= render :partial => "page", :collection => @pages %>
-	<li><%= link_to "new page", new_page_path, :rel => "overlay get" %></li>
 </ul>
+
+<input type="button" value="New Page" id="capefish_new_page">

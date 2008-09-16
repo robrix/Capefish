@@ -29,9 +29,11 @@ div.overlay div.content {
 }
 
 div.overlay div.error {
-	width: 400px; height: 100px;
-	margin-left: -200px; margin-top: -50px;
-	line-height: 100px;
+	position: absolute;
+	width: 750px; height: 3em;
+	top: 50%;
+	margin: 0 auto;
+	margin-top: -1em;
 	text-align: center;
 }
 
@@ -40,6 +42,10 @@ div.overlay div.loaded {
 }
 
 
+/* overview */
+ul.page {
+	display: none;
+}
 
 /* editor */
 #capefish_editor span.erb {

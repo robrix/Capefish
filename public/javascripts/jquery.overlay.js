@@ -1,52 +1,77 @@
-Overlay = {
-	Trigger: $.klass({
-		initialize: function(options) {
-			this.url = options.url
-			this.method = options.method || "GET"
-		},
-		onclick: function() {
-			var overlay = $("<div class='overlay'></div>")
-			var backdrop = $("<div class='backdrop'></div>")
-			overlay.append(backdrop)
-			var loading = $("<div class='loading'>hee hee</div>")
-			backdrop.append(loading)
-			$(document.body).append(overlay)
-			overlay.children(".backdrop").fadeTo("slow", 0.5)
-			$.ajax({
-				type: this.method,
-				url: this.url,
-				error: function(request, status, error) {
-					var error = $("<div class='error content'>An error occurred with status code "+request.status+". Click to close.</div>")
-					loading.remove()
-					overlay.append(error)
-				},
-				success: function(data, status) {
-					var content = $("<div class='content'></div>")
-					var loaded = $("<div class='loaded'></div>")
-					loading.remove()
-					content.append(loaded)
-					loaded.append(data)
-					overlay.append(content)
-				}
-			})
+Overlay = $.klass({
+	initialize: function() {
+		this.container = $("<div class='overlay'></div>")
+		this.backdrop = $("<div class='backdrop'></div>")
+		this.container.append(this.backdrop)
+		this.loading = $("<div class='loading'></div>")
+		this.content = $("<div class='content'></div>")
+		this.loaded = $("<div class='loaded'></div>")
+		this.content.append(this.loaded)
+		this.unload()
+	},
+	show: function() {
+		this.container.css("opacity", 1)
+		$(document.body).append(this.container)
+		var overlay = this
+		this.backdrop.click(function() {
+			overlay.hide()
 			return false
-		}
-	}),
-	Dismiss: $.klass({
-		onclick: function(event) {
-			var overlay = this.element
-			while(overlay && (overlay.attr("class") != "overlay")) { overlay = $(overlay.parent()) }
-			overlay && overlay.fadeTo("slow", 0, function() {
-				$(this).remove()
-			})
+		})
+		this.backdrop.fadeTo("fast", 0.5)
+	},
+	load: function(data) {
+		this.loading.remove()
+		this.loaded.empty()
+		this.loaded.append(data)
+		var overlay = this
+		this.container.append(this.content)
+		this.container.find("input[type=button][name*=overlay], button[name*=overlay]").each(function(){
+			this.overlay = overlay
+		})
+		this.container.find("a[rel=overlay close], input[type=button][name=overlay_close], button[name=overlay_close]").click(function() {
+			overlay.hide()
 			return false
-		}
-	})
-}
+		})
+	},
+	unload: function() {
+		this.loaded.empty()
+		this.content.remove()
+		this.backdrop.append(this.loading)
+	},
+	hide: function() {
+		var overlay = this
+		this.container.fadeTo("fast", 0.0, function() {
+			overlay.backdrop.css("opacity", 0)
+			overlay.container.remove()
+		})
+	}
+})
+
+Overlay.Loader = $.klass({
+	initialize: function(options) {
+		this.url = options.url
+		this.method = options.method || "GET"
+		this.overlay = new Overlay()
+	},
+	onclick: function() {
+		this.overlay.show()
+		var overlay = this.overlay
+		$.ajax({
+			type: this.method,
+			url: this.url,
+			error: function(request, status, error) {
+				overlay.load("<div class='error'><p>An error occurred with status code "+request.status+".</p><input type='button' name='overlay_close' value='OK'></div>")
+			},
+			success: function(data, status) {
+				overlay.load(data)
+			}
+		})
+		return false
+	}
+})
 
 $(document).ready(function(){
 	$("a[rel*=overlay][rel*=get], a[rel*=overlay][rel*=post]").each(function(i) {
-		$(this).attach(Overlay.Trigger, {url: $(this).attr("href"), method: ($(this).attr("rel").indexOf("get")>0) ? "GET" : "POST"})
+		$(this).attach(Overlay.Loader, {url: $(this).attr("href"), method: ($(this).attr("rel").indexOf("post")>0) ? "POST" : "GET"})
 	})
-	$("div.backdrop, a[rel=overlay close]").attach(Overlay.Dismiss, {})
 })
