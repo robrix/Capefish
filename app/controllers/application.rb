@@ -38,17 +38,4 @@ class ApplicationController < ActionController::Base
 	def current_user
 		@user ||= BasicUser.find(session[:username])
 	end
-	
-	# def reporting_errors_on(*objs)
-	# 	valid = objs.all?{ |obj| obj.valid? }
-	# 	render :update do |page|
-	# 		if valid
-	# 			yield page
-	# 		else
-	# 			flash[:error] = objs.map{ |obj| obj.errors.full_messages }.flatten.join($/)
-	# 			page.alert flash[:error]
-	# 		end
-	# 	end
-	# 	return valid
-	# end
 end
