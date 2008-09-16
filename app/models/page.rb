@@ -109,10 +109,14 @@ class	Page
 	end
 	
 	def to_param
-		self.path.join("/")
+		self.id
 	end
 	
 	def new_record?
 		!Page.exists?(self.path)
+	end
+	
+	def id
+		self.path.join("/")
 	end
 end
