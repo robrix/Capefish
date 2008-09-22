@@ -1,4 +1,5 @@
-#!/usr/bin/env ruby -rubygems
+#!/usr/bin/env ruby
+require "rubygems"
 require File.dirname(__FILE__) + '/../app/models/basic_user'
 require "termios"
 
