@@ -3,7 +3,7 @@ content_for :stylesheets, stylesheet_link_tag("application/capefish")
 content_for :javascripts, javascript_include_tag("jquery", "jquery.livequery", "jquery.lowpro", "capefish.editor", :cache => true)
 -%>
 
-<input type="hidden" value="<%= @page.path.join("/") %>" id="capefish_page_path">
+<input type="hidden" value="<%= @page.to_param %>" id="capefish_page_path">
 <input type="hidden" value="<%= form_authenticity_token %>" id="capefish_authenticity_token">
 
 <div id="capefish_editor" contenteditable="true"><%= @page.raw_content.gsub(/\<\%(.+?)\%\>/, '<span class="erb">\1</span>') -%></div>
