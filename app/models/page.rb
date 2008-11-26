@@ -46,7 +46,7 @@ class	Page
 	end
 	
 	def initialize(options = {})
-		@content_view = ActionView::Base.new(ActionView::TemplateFinder.process_view_paths(PAGES_ROOT), {:page => self}, self)
+		@content_view = ActionView::Base.new(PAGES_ROOT, {:page => self}, self)
 		if options[:path] or options[:file_path]
 			@path = if options[:file_path]
 				Page.file_path_to_path(options[:file_path])
