@@ -20,7 +20,7 @@ class PagesController < ApplicationController
 	end
 	
 	def show
-		path = params[:path] || unescape(params[:id])
+		path = params[:id] ? unescape(params[:id]) : params[:path] || ''
 		@page = Page.find(:path => path) || error
 		respond_to do |format|
 			format.html do
