@@ -11,7 +11,7 @@ class ApplicationController < ActionController::Base
 			false
 		elsif controller.request.format == Mime::XML
 			"rss20"
-		else
+		elsif controller.request.format == Mime::HTML
 			@@default_layout_template
 		end
 	end)
