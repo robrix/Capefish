@@ -117,6 +117,6 @@ class	Page
 	end
 	
 	def id
-		self.path.join("/")
+		self.path.join("%2F")
 	end
 end

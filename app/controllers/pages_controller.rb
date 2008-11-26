@@ -1,3 +1,5 @@
+require "cgi"
+
 class PagesController < ApplicationController
 	before_filter :authenticate, :except => [:show, :index]
 	
@@ -18,7 +20,8 @@ class PagesController < ApplicationController
 	end
 	
 	def show
-		@page = Page.find(:path => params[:path]) || error
+		path = params[:path] || unescape(params[:id])
+		@page = Page.find(:path => path) || error
 		respond_to do |format|
 			format.html do
 				@page.layout_template && self.class.layout(@page.layout_template)
@@ -31,12 +34,12 @@ class PagesController < ApplicationController
 	end
 	
 	def edit
-		@page = Page.find(:path => params[:id].split("/")) || error
+		@page = Page.find(:path => unescape(params[:id]).split("/")) || error
 		render :layout => @page.layout_template || self.class.default_layout_template
 	end
 	
 	def update
-		@page = Page.find(:path => params[:id].split("/")) || error
+		@page = Page.find(:path => unescape(params[:id]).split("/")) || error
 		File.open(Page.file_path(@page.path), "w") do |file|
 			file.write params[:page_content]
 		end
