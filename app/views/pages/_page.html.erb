@@ -1,5 +1,5 @@
 <% content_tag_for :li, page do %>
-	<%= link_to page.title, edit_page_path(:id => page.id), :rel => "overlay get" %>
+	<%= link_to page.title, edit_page_path, :rel => "overlay get" %>
 	<% content_tag_for :ul, page, :children do %>
 		<%= render :partial => "page", :collection => page.children %>
 	<%- end %>
