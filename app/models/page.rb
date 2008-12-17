@@ -119,4 +119,8 @@ class	Page
 	def id
 		self.path.join("%2F")
 	end
+	
+	def to_link
+		self.path.join("/")
+	end
 end
