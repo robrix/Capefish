@@ -59,6 +59,7 @@ class	Page
 			@path = ["index"]
 		end
 		@content_template = "default"
+		_content = self.content
 	end
 	
 	def file_path
