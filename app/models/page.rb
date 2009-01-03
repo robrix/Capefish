@@ -1,5 +1,5 @@
 class	Page
-	attr_accessor :content, :title, :summary, :path, :layout_template, :raw_content
+	attr_accessor :content, :title, :summary, :path, :layout_template, :content_template, :raw_content
 
 	class PageNotFoundException < Exception ; end
 	
@@ -58,6 +58,7 @@ class	Page
 			@path = ["index"]
 			@content = self.content
 		end
+		@content_template = "default"
 	end
 	
 	def file_path
