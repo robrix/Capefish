@@ -1,5 +1,7 @@
 Overall:
 - move to github.
+- refactor to an engine.
+	This means that e.g. Monochrome Industries can be in its own repo and can track and override changes to Capefish in a submodule, separately from its tracking of its own pages and artwork.
 Pages:
 - revert to fs-based
 	Comments:

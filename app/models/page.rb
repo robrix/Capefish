@@ -5,6 +5,7 @@ class	Page
 	
 	PAGES_ROOT = "#{RAILS_ROOT}/pages"
 	CONTENT_TEMPLATE_ROOT = "#{RAILS_ROOT}/app/views"
+	CAPEFISH_CONTENT_TEMPLATE_ROOT = "#{RAILS_ROOT}/vendor/plugins/capefish/app/views"
 	SUFFIX = ".html.erb"
 	
 	def self.exists?(path)
@@ -48,7 +49,7 @@ class	Page
 	
 	def initialize(options = {})
 		@content_view = ActionView::Base.new(ActionView::Base.process_view_paths(PAGES_ROOT), {:page => self}, self)
-		@content_template_view = ActionView::Base.new(ActionView::Base.process_view_paths(CONTENT_TEMPLATE_ROOT), {:page => self}, self)
+		@content_template_view = ActionView::Base.new(ActionView::Base.process_view_paths([CONTENT_TEMPLATE_ROOT, CAPEFISH_CONTENT_TEMPLATE_ROOT]), {:page => self}, self)
 		if options[:path] or options[:file_path]
 			@path = if options[:file_path]
 				Page.file_path_to_path(options[:file_path])
@@ -80,7 +81,7 @@ class	Page
 	
 	def templated_content
 		_content = self.content
-		@content_template_view.render(:partial => "layouts/#{self.content_template}", :page => self)
+    @content_template_view.render(:partial => "layouts/#{self.content_template}", :page => self)
 	end
 	
 	def summary

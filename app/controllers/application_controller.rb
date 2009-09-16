@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
 	
 	def authenticate
 		if BasicUser.has_users
-			authenticate_or_request_with_http_basic do |username, password|
+			authenticate_or_request_with_http_digest do |username, password|
 				if @user = BasicUser.find(username) and @user.authenticate?(password)
 					session[:username] = username
 				end
