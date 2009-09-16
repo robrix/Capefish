@@ -1,9 +1,9 @@
 Overall:
-- move to github.
-- refactor to an engine.
+- move to github. @done(2009-09-16)
+- refactor to an engine. @done(2009-09-16)
 	This means that e.g. Monochrome Industries can be in its own repo and can track and override changes to Capefish in a submodule, separately from its tracking of its own pages and artwork.
 Pages:
-- revert to fs-based
+- revert to fs-based @done(2009-09-16)
 	Comments:
 	- store them in the filesystem, into page-name-comments/….
 	- the file should be named with the date/time/email, human readable.
