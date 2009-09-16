@@ -1,0 +1,10 @@
+Overall:
+- move to github.
+Pages:
+- revert to fs-based
+	Comments:
+	- store them in the filesystem, into page-name-comments/….
+	- the file should be named with the date/time/email, human readable.
+	- should use well-known captcha mechanisms.
+	- should use well-known filtering mechanisms to prevent HTML from being shown.
+	- should use well-known filtering mechanisms to prevent spam that beats the captcha.
