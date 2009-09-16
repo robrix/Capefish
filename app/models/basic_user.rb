@@ -1,7 +1,7 @@
 require "digest/md5"
 
 class BasicUser
-	AUTHFILE_PATH = "#{File.dirname(__FILE__)}/../../config/auth.passwd"
+	AUTHFILE_PATH = "#{RAILS_ROOT}/config/auth.passwd"
 	AUTHFILE_ENTRY_PATTERN = /([^\s]+):([^\s]+)/
 	
 	def self.has_users
