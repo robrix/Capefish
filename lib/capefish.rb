@@ -1,5 +1,3 @@
-# require "capefish/action_controller"
-
 class ActionController::Routing::RouteSet
   def load_routes_with_capefish!
     capefish_routes = File.join(File.dirname(__FILE__), 

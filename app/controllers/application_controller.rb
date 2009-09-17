@@ -4,9 +4,9 @@ class ApplicationController < ActionController::Base
   unloadable
   
   cattr_accessor :default_layout_template
-  @@default_layout_template = "default"
+  @@default_layout_template ||= "default"
   cattr_accessor :site_title
-  @@site_title = "Capefish"
+  @@site_title ||= "Capefish"
   
   layout(proc do |controller|
     if controller.request.xhr? or controller.request.format == Mime::JS
