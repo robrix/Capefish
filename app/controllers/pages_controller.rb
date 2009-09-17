@@ -1,7 +1,6 @@
 require "cgi"
 
 class PagesController < ApplicationController
-  unloadable
 	before_filter :authenticate_capefish, :except => [:show, :index]
 	
 	def index
