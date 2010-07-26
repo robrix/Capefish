@@ -1,6 +1,8 @@
 class	Page
-	attr_accessor :content, :title, :summary, :path, :layout_template, :content_template, :raw_content
-
+  attr_accessor :content, :raw_content, :summary
+	attr_accessor :title, :path
+	attr_accessor :layout_template, :content_template
+  
 	class PageNotFoundException < Exception ; end
 	
 	PAGES_ROOT = "#{RAILS_ROOT}/pages"
@@ -20,7 +22,7 @@ class	Page
 		"#{PAGES_ROOT}/#{path.join("/")}/"
 	end
 	
-	def self.roots()
+	def self.roots
 		Dir.glob("#{PAGES_ROOT}/*#{SUFFIX}").collect{ |file_path|
 			Page.new :file_path => file_path
 		}.sort_by(&:title)
@@ -47,6 +49,7 @@ class	Page
 		end
 	end
 	
+	
 	def initialize(options = {})
 		@content_view = ActionView::Base.new(ActionView::Base.process_view_paths(PAGES_ROOT), {:page => self}, self)
 		@content_template_view = ActionView::Base.new(ActionView::Base.process_view_paths([CONTENT_TEMPLATE_ROOT, CAPEFISH_CONTENT_TEMPLATE_ROOT]), {:page => self}, self)
@@ -63,6 +66,7 @@ class	Page
 		_content = self.content
 	end
 	
+	
 	def file_path
 		Page.file_path(self.path)
 	end
@@ -70,6 +74,7 @@ class	Page
 	def dir_path
 		Page.dir_path(self.path)
 	end
+	
 	
 	def raw_content
 		@raw_content ||= IO.read(self.file_path)
@@ -94,19 +99,22 @@ class	Page
 		@summary
 	end
 	
+	
 	def name
-		@name || self.path.last
+		@name ||= self.path.last
 	end
 	
 	def title
-		@title || self.name.titleize
+		@title ||= self.name.titleize
 	end
+	
 	
 	def children
 		@children ||= Dir.glob("#{self.dir_path}/*#{SUFFIX}").collect do |path|
 			Page.new(:file_path => path)
 		end
 	end
+	
 	
 	def updated_at
 		File.mtime(self.file_path)
@@ -115,6 +123,7 @@ class	Page
 	def created_at
 		File.ctime(self.file_path)
 	end
+	
 	
 	def to_param
 		self.id
@@ -131,4 +140,13 @@ class	Page
 	def to_link
 		self.path.join("/")
 	end
+	
+	
+	def private?
+	  @private
+	end
+	
+	def private=(flag)
+	  @private = flag
+  end
 end
