@@ -4,9 +4,24 @@ Overall:
 	This means that e.g. Monochrome Industries can be in its own repo and can track and override changes to Capefish in a submodule, separately from its tracking of its own pages and artwork.
 Pages:
 - revert to fs-based @done(2009-09-16)
+
 	Comments:
 	- store them in the filesystem, into page-name-comments/….
 	- the file should be named with the date/time/email, human readable.
 	- should use well-known captcha mechanisms.
 	- should use well-known filtering mechanisms to prevent HTML from being shown.
 	- should use well-known filtering mechanisms to prevent spam that beats the captcha.
+- pages should have a private flag.
+	- new pages are private by default.
+	- private pages don’t get listed in blogs unless the user is logged in.
+	- private pages require authentication to show.
+PagesController:
+- implement new
+- implement create
+- implement destroy
+
+PagesHelper:
+- make it easy to do blogs a la monochromeindustries.com, with pagination and such
+
+Tests:
+- write some. *shame*
